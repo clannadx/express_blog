@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>Document</title>
+  <style>
+    *{padding: 0;margin: 0}
+      .edit{width: 500px;padding: 30px;}
+  </style>
+</head>
+
+<body>
+  <form class="edit">
+    <button onclick="history.go(-1)" type="button" style="margin-bottom:30px" class="btn btn-primary">返回</button>
+
+    <div class="form-group">
+      <label for="title">标题</label>
+      <input type="text" class="form-control" id="title" value=<%=data[0].title %> >
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">内容</label>
+      <textarea id="content" class="form-control" rows="3"><%=data[0].content %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">时间</label>
+      <input type="text" class="form-control" id="time" disabled>
+    </div>
+    <button onclick="submitii()" type="button" id="submit" class="btn btn-primary">提交</button>
+  </form>
+</body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+<script>
+  window.onload = function () {
+    let now = moment().format('YYYY-MM-DD HH:mm:ss')
+    $('#time').val(now)
+
+  }
+
+  function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
+
+  function submitii() {
+    $.ajax({
+      method: 'post',
+      url: '/form',
+      dataType: 'json',
+      data: {
+        id: getQueryString('id'),
+        title: $('#title').val(),
+        content: $('#content').val(),
+        createdAt: $('#time').val()
+      },
+      success(data) {
+        alert(data.msg)
+        if (data.status === 'success') {
+          window.location.href = '/'
+        } else {
+          window.location.reload()
+        }
+      }
+    })
+  }
+</script>
+
+</html>
