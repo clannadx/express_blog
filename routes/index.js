@@ -37,13 +37,13 @@ router.get('/edit/:id?', async function (req, res, next) {
 router.get('/posts/:id?', async function (req, res, next) {
   const result = await getJson()
   const id = req.param('id')
-  res.render('edit', {
+  res.render('posts', {
     data: result.data.filter((item) => item.id == id)
   })
 })
 
 router.post('/form', async function (req, res, next) {
-  console.log(req.body)
+  console.log(req.body,'333333')
   const result = await changeJson(req.body.id, req.body)
   if(result){
     res.json({

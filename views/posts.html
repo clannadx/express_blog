@@ -12,20 +12,21 @@
   </style>
 </head>
 <body>
-  <form class="edit" method="POST" action="/form">
+  <form class="edit" method="POST" action="/form" >
       <button onclick="history.go(-1)" type="button" style="margin-bottom:30px" class="btn btn-primary">返回</button>
-
+      <input type="hidden" id="id"  name="id" value="">
       <div class="form-group" >
-        <label for="exampleInputEmail1">标题</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" value=<%=data[0].title %> >
+        <label for="title">标题</label>
+        <input type="text" class="form-control" name="title" id="title" value=<%=data[0].title %> >
       </div>
       <div class="form-group">
-          <label for="exampleInputPassword1">内容</label>
-          <textarea id="exampleInputPassword1" class="form-control" rows="3"><%=data[0].content %></textarea>
+          <label for="content">内容</label>
+          <textarea id="content" name="content" class="form-control" rows="3"><%=data[0].content %></textarea>
         </div>      
       <div class="form-group">
-        <label for="exampleInputPassword1">时间</label>
-        <input type="text" class="form-control" id="time" disabled >
+        <label for="time">时间</label>
+        <input type="text" name="createdAt" class="form-control" readonly  id="time"  >
+        <!-- disabled提交不上去 -->
       </div>
       <button type="submit" id="submit" class="btn btn-primary">提交</button>
     </form>
@@ -34,8 +35,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 <script>
   window.onload = function (){
+
+
     let now = moment().format('YYYY-MM-DD')
+    function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+  }
     $('#time').val(now)
+    $('#id').val(getQueryString('id'))
+
   }
 
 </script>
